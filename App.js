@@ -7,7 +7,8 @@ import TrackCreateScreen from "./src/screens/TrackCreateScreen";
 import SignInScreen from "./src/screens/SignInScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import TrackDetailScreen from "./src/screens/TrackDetailScreen";
-import TrackListScreen from "./src/screens/TrackCreateScreen";
+import TrackListScreen from "./src/screens/TrackListScreen";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const switchNavigator = createSwitchNavigator({
   loginFlow: createStackNavigator({
@@ -24,4 +25,14 @@ const switchNavigator = createSwitchNavigator({
   }),
 });
 
-export default createAppContainer(switchNavigator);
+const AppContainer = createAppContainer(switchNavigator);
+
+const App = () => {
+  return (
+    <SafeAreaProvider>
+      <AppContainer />
+    </SafeAreaProvider>
+  );
+};
+
+export default App;
