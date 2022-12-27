@@ -12,6 +12,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as AuthProvider } from "./src/context/authContext";
 import { setNavigator } from "./src/navigationRef";
 import ResolveAuthScreen from "./src/screens/ResolveAuthScreen";
+import { Provider as LocationProvider } from "./src/context/locationContext";
 
 const switchNavigator = createSwitchNavigator({
   ResolveAuth: ResolveAuthScreen,
@@ -34,13 +35,15 @@ const AppContainer = createAppContainer(switchNavigator);
 const App = () => {
   return (
     <SafeAreaProvider>
-      <AuthProvider>
-        <AppContainer
-          ref={(navigator) => {
-            setNavigator(navigator);
-          }}
-        />
-      </AuthProvider>
+      <LocationProvider>
+        <AuthProvider>
+          <AppContainer
+            ref={(navigator) => {
+              setNavigator(navigator);
+            }}
+          />
+        </AuthProvider>
+      </LocationProvider>
     </SafeAreaProvider>
   );
 };
