@@ -5,6 +5,8 @@ import { navigate } from "../navigationRef";
 
 const authReducer = (state, action) => {
   switch (action.type) {
+    case "signout":
+      return { token: null, errorMessage: "" };
     case "clear_errorMessage":
       return { ...state, errorMessage: "" };
     case "accountFlow":
@@ -65,10 +67,10 @@ const signin =
     }
   };
 
-const signout = (dispatch) => {
-  return () => {
-    // sign out
-  };
+const signout = (dispatch) => async () => {
+  await AsyncStorage.removeItem("token");
+  dispatch({ type: "signout" });
+  navigate("loginFlow");
 };
 
 export const { Provider, Context } = createDataContext(
