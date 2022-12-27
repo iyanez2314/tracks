@@ -5,7 +5,9 @@ import { navigate } from "../navigationRef";
 
 const authReducer = (state, action) => {
   switch (action.type) {
-    case "signup":
+    case "clear_errorMessage":
+      return { ...state, errorMessage: "" };
+    case "accountFlow":
       return { errorMessage: "", token: action.payload };
     case "add_error":
       return { ...state, errorMessage: action.payload };
@@ -14,30 +16,43 @@ const authReducer = (state, action) => {
   }
 };
 
+const clearErrorMessage = (dispatch) => () => {
+  dispatch({
+    type: "clear_errorMessage",
+  });
+};
+
 const signup =
   (dispatch) =>
   async ({ email, password }) => {
     try {
       const response = await trackerApi.post("/signup", { email, password });
       await AsyncStorage.setItem("token", response.data.token);
-      dispatch({ type: "signup", payload: response.data.token });
+      dispatch({ type: "accountFlow", payload: response.data.token });
       navigate("TrackList");
     } catch (error) {
       dispatch({
         type: "add_error",
         payload: "Something went wrong with signing up!",
       });
-      console.log(error);
     }
   };
 
-const signin = (dispatch) => {
-  return ({ email, password }) => {
-    // Try to sign in
-    // handle success by updating state
-    // handle faliure
+const signin =
+  (dispatch) =>
+  async ({ email, password }) => {
+    try {
+      const response = await trackerApi.post("/signin", { email, password });
+      await AsyncStorage.setItem("token", response.data.token);
+      dispatch({ type: "accountFlow", payload: response.data.token });
+      navigate("TrackList");
+    } catch (error) {
+      dispatch({
+        type: "add_error",
+        payload: "Something went wrong with sign in!",
+      });
+    }
   };
-};
 
 const signout = (dispatch) => {
   return () => {
@@ -47,6 +62,6 @@ const signout = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signup, signin, signout },
+  { signup, signin, signout, clearErrorMessage },
   { token: null, errorMessage: "" }
 );
