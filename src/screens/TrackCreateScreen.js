@@ -16,13 +16,13 @@ const TrackCreateScreen = ({ isFocused }) => {
     },
     [state.recording]
   );
-  const [err] = useLocation(state.recording, callback);
+  const [err] = useLocation(isFocused || state.recording, callback);
   console.log("In track create screen => ", state.recording);
   return (
     <SafeAreaView>
       <Text h2>Create A Track</Text>
       <Map />
-      {/* {err ? <Text>Please enable location services </Text> : null} */}
+      {err ? <Text>Please enable location services </Text> : null}
       <TrackForm />
     </SafeAreaView>
   );

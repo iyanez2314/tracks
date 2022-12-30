@@ -41,7 +41,7 @@ export default (shouldTrack, callback) => {
         sub.remove();
       }
     };
-  }, [shouldTrack]);
+  }, [shouldTrack, callback]);
 
   return [err];
 };
