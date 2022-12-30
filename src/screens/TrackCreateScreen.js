@@ -9,14 +9,15 @@ import { withNavigationFocus } from "react-navigation";
 import TrackForm from "../components/TrackForm";
 
 const TrackCreateScreen = ({ isFocused }) => {
-  const { addLocation, state: recording } = useContext(LocationContext);
+  const { addLocation, state } = useContext(LocationContext);
   const callback = useCallback(
     (location) => {
-      addLocation(location, recording);
+      addLocation(location, state.recording);
     },
-    [recording]
+    [state.recording]
   );
-  // const [err] = useLocation(isFocused || recording, callback);
+  const [err] = useLocation(state.recording, callback);
+  console.log("In track create screen => ", state.recording);
   return (
     <SafeAreaView>
       <Text h2>Create A Track</Text>
